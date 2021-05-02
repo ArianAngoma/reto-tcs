@@ -1,0 +1,16 @@
+{
+  "name": "reto-tcs",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Arian",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "swapi-node": "^0.6.0",
+    "translate": "^1.2.3",
+    "uuid": "^2.0.3"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.897.0"
+  }
+}

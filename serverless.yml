@@ -1,0 +1,135 @@
+service: reto-tcs
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "*"
+
+functions:
+  # Funciones para la tabla "swapi-person"
+  createPerson:
+    handler: endpoint/person/create.create
+    events:
+      - http:
+          path: person/{id}
+          method: post
+          cors: true
+
+  listPerson:
+    handler: endpoint/person/list.list
+    events:
+      - http:
+          path: person
+          method: get
+          cors: true
+
+  getPerson:
+    handler: endpoint/person/get.get
+    events:
+      - http:
+          path: person/{id}
+          method: get
+          cors: true
+
+  updatePerson:
+    handler: endpoint/person/update.update
+    events:
+      - http:
+          path: person/{id}
+          method: put
+          cors: true
+
+  deletePerson:
+    handler: endpoint/person/delete.delete
+    events:
+      - http:
+          path: person/{id}
+          method: delete
+          cors: true
+
+  # Funciones para la tabla "swapi-film"
+  createFilm:
+    handler: endpoint/film/create.create
+    events:
+      - http:
+          path: film/{id}
+          method: post
+          cors: true
+
+  listFilm:
+    handler: endpoint/film/list.list
+    events:
+      - http:
+          path: film
+          method: get
+          cors: true
+
+  getFilm:
+    handler: endpoint/film/get.get
+    events:
+      - http:
+          path: film/{id}
+          method: get
+          cors: true
+
+  updateFilm:
+    handler: endpoint/film/update.update
+    events:
+      - http:
+          path: film/{id}
+          method: put
+          cors: true
+
+  deleteFilm:
+    handler: endpoint/film/delete.delete
+    events:
+      - http:
+          path: film/{id}
+          method: delete
+          cors: true
+
+resources:
+  Resources:
+    # Propiedades de la tabla "swapi-person"
+    TcsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: 'swapi-person'
+    # Propiedades de la tabla "swapi-person"
+    FilmsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: "swapi-films"
